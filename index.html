@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-position: center;
+            background-size:cover;
+        }
+        .container {
+            background-color: white;
+            padding: 50px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            color: black;
+        }
+        .container label {
+            display: block;
+            margin: 10px 0 5px;
+            color: black;
+        }
+        .container input[type="text"],
+        .container input[type="tel"],
+        .container input[type="email"],
+        .container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #000000;
+            border-radius: 3px;
+        }
+        .container button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        .student-list {
+            background-color: #fff;
+            padding: 50px;
+            margin-top: 20px;
+            border-radius: 0px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+        }
+        .student-list h2 {
+            margin-bottom: 20px;
+          
+        }
+        .student-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .student-list table, .student-list th, .student-list td {
+            border: 1px solid #ccc;
+        }
+        .student-list th, .student-list td {
+            padding: 10px;
+            text-align: left;
+            border-radius: 50px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> BE ONE OF ASPIRING HINT FINDS AGENT</h1>
+        <form id="registrationForm">
+            <label for="name">Full Name :</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">Phone Number :</label>
+            <input type="tel" id="date" name="date" required>
+
+            <label for="email">Email Address :</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="position">Position applying for :</label>
+            <select id="position" name="position" required>
+                <option value="Sales And Marketing Management">Sales And Marketing Management</option>
+                <option value="Social Media Manager">Social Media Manager</option>
+                <option value="Copywriter">Copywriter</option>
+                <option value="Marketing Manager">Marketing Manager</option>
+                <option value="Sales Manager">Sales Manager</option>
+            </select>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <div class="student-list">
+        <h2>Registered Applicant</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody id="studentTableBody">
+                <!-- Student rows will be added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('tel').value;
+            const email = document.getElementById('email').value;
+            const position = document.getElementById('position').value;
+
+            // Create student object
+            const student = {
+                name: name,
+                tel: phone,
+                email: email,
+                position: position
+            };
+
+            // Get existing students from localStorage
+            let students = localStorage.getItem('students');
+            if (students) {
+                students = JSON.parse(students);
+            } else {
+                students = [];
+            }
+
+            // Add new student to the array
+            students.push(student);
+
+            // Save updated students array back to localStorage
+            localStorage.setItem('students', JSON.stringify(students));
+
+            // Clear the form
+            document.getElementById('registrationForm').reset();
+
+            // Update the student list display
+            displayStudents();
+
+            alert('You have successfully submitted your application!');
+        });
+
+        function displayStudents() {
+            const studentTableBody = document.getElementById('studentTableBody');
+            studentTableBody.innerHTML = '';
+
+            // Get students from localStorage
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+
+            // Display each student in the table
+            students.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.tel}</td>
+                    <td>${student.email}</td>
+                    <td>${student.position}</td>
+                `;
+                studentTableBody.appendChild(row);
+            });
+        }
+
+        // Display students on page load
+        displayStudents();
+    </script>
+</body>
+</html>
